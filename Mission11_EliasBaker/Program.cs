@@ -22,8 +22,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute("pagination", "Bookstore/{pageNum}", new {Controller="Home", action="Index"}
-);
+app.MapControllerRoute("pagenumandtype", "{bookType}/{pageNum}", new { Controller = "Home", action = "Index" });
+app.MapControllerRoute("pagination", "Bookstore/{pageNum}", new {Controller="Home", action="Index", pageNum = 1});
+app.MapControllerRoute("bookType", "{bookType}", new { Controller = "Home", action = "Index", pageNum = 1 });
+
 app.MapDefaultControllerRoute();
 
 app.Run();

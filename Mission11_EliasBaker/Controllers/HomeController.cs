@@ -14,12 +14,13 @@ namespace Mission11_EliasBaker.Controllers
             _bookRepo = temp;
         }
 
-        public IActionResult Index(int pageNum)
+        public IActionResult Index(int pageNum, string bookType)
         {
             int pageSize = 10;
             var blah = new BooksListViewModel
             {
                 Books = _bookRepo.Books
+                .Where(x => x.Category == bookType || bookType == null)
                 .OrderBy(x => x.Title)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize),
@@ -28,8 +29,9 @@ namespace Mission11_EliasBaker.Controllers
                 {
                     CurrentPage = pageNum,
                     ItemsPerPage = pageSize,
-                    TotalItems = _bookRepo.Books.Count()
-                }
+                    TotalItems = bookType == null ? _bookRepo.Books.Count() : _bookRepo.Books.Where(x => x.Category == bookType).Count()
+                },
+                CurrentBookType = bookType
             };
 
             return View(blah);
